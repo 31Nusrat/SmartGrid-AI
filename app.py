@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 from datetime import date
@@ -148,20 +147,13 @@ st.markdown(
 
 st.markdown(
     '<div class="subtitle">'
-    'AI-Powered Electricity Usage Prediction '
+    'AI-Powered Electricity Demand Forecasting '
     '& Consumer Advisory Platform'
     '</div>',
     unsafe_allow_html=True
 )
 
 st.write("")
-
-st.info(
-    "Prototype dashboard using synthetic Texas-like data. "
-    "Predictions are illustrative high-usage indicators, "
-    "not official ERCOT forecasts or outage alerts."
-)
-
 st.divider()
 
 
@@ -172,7 +164,7 @@ st.divider()
 st.sidebar.title("⚙️ Prediction Settings")
 
 st.sidebar.caption(
-    "Enter the location and weather conditions."
+    "Configure location and weather conditions."
 )
 
 st.sidebar.subheader("📍 Location")
@@ -256,17 +248,19 @@ predict_button = st.sidebar.button(
 
 
 # ==========================================
-# 6. INPUT VALIDATION
+# 6. INPUT VALIDATION AND PREDICTION
 # ==========================================
 
 if predict_button:
 
     if temperature_min > temperature_mean:
+
         st.sidebar.error(
             "Minimum temperature cannot exceed average temperature."
         )
 
     elif temperature_mean > temperature_max:
+
         st.sidebar.error(
             "Average temperature cannot exceed maximum temperature."
         )
@@ -290,8 +284,7 @@ if predict_button:
         try:
 
             with st.spinner(
-                "Running ML models, retrieving PDF knowledge "
-                "and generating Gemini explanation..."
+                "Analyzing energy demand and generating AI advisory..."
             ):
 
                 result = run_smartgrid(input_data)
@@ -299,7 +292,7 @@ if predict_button:
             st.session_state.prediction_result = result
             st.session_state.last_input = input_data
 
-            st.sidebar.success("Prediction completed!")
+            st.sidebar.success("Prediction completed successfully!")
 
         except Exception as e:
 
@@ -308,11 +301,12 @@ if predict_button:
 
 
 # ==========================================
-# 7. DISPLAY DASHBOARD
+# 7. DASHBOARD DISPLAY
 # ==========================================
 
 result = st.session_state.prediction_result
 input_data = st.session_state.last_input
+
 
 if result is None:
 
@@ -324,8 +318,8 @@ if result is None:
     )
 
     st.write(
-        "Configure the weather and location conditions "
-        "in the sidebar, then click Generate Prediction."
+        "Configure the location and weather conditions "
+        "in the sidebar to generate an energy demand prediction."
     )
 
     st.write("")
@@ -333,45 +327,54 @@ if result is None:
     col1, col2, col3 = st.columns(3)
 
     with col1:
+
         st.markdown(
-            '<div class="metric-box">'
-            '<div class="metric-label">REGRESSION</div>'
-            '<div class="metric-value">Usage Forecast</div>'
-            '<div class="metric-note">Predict electricity usage</div>'
-            '</div>',
+            """
+            <div class="metric-box">
+                <div class="metric-label">MACHINE LEARNING</div>
+                <div class="metric-value">Demand Forecast</div>
+                <div class="metric-note">Electricity usage prediction</div>
+            </div>
+            """,
             unsafe_allow_html=True
         )
 
     with col2:
+
         st.markdown(
-            '<div class="metric-box">'
-            '<div class="metric-label">CLASSIFICATION</div>'
-            '<div class="metric-value">Risk Detection</div>'
-            '<div class="metric-note">Identify high-usage risk</div>'
-            '</div>',
+            """
+            <div class="metric-box">
+                <div class="metric-label">RISK ANALYTICS</div>
+                <div class="metric-value">Risk Detection</div>
+                <div class="metric-note">High-usage classification</div>
+            </div>
+            """,
             unsafe_allow_html=True
         )
 
     with col3:
+
         st.markdown(
-            '<div class="metric-box">'
-            '<div class="metric-label">GENERATIVE AI</div>'
-            '<div class="metric-value">RAG + Gemini</div>'
-            '<div class="metric-note">Generate grounded explanations</div>'
-            '</div>',
+            """
+            <div class="metric-box">
+                <div class="metric-label">GENERATIVE AI</div>
+                <div class="metric-value">RAG + Gemini</div>
+                <div class="metric-note">Intelligent energy advisory</div>
+            </div>
+            """,
             unsafe_allow_html=True
         )
 
     st.info(
-        "Your dashboard is ready. Enter prediction conditions "
-        "using the sidebar to begin."
+        "Your energy intelligence dashboard is ready. "
+        "Enter prediction conditions to get started."
     )
 
 
 else:
 
     # ======================================
-    # 8. PREDICTION SUMMARY
+    # 8. PREDICTION OVERVIEW
     # ======================================
 
     st.markdown(
@@ -391,7 +394,7 @@ else:
                     {result['predicted_usage']:,.2f}
                 </div>
                 <div class="metric-note">
-                    Model output in dataset units
+                    Model prediction
                 </div>
             </div>
             """,
@@ -425,7 +428,7 @@ else:
                     {result['usage_threshold']:,.2f}
                 </div>
                 <div class="metric-note">
-                    Training-set 75th percentile
+                    Model-defined usage threshold
                 </div>
             </div>
             """,
@@ -461,8 +464,8 @@ else:
         )
 
         st.warning(
-            "The model classified this input as high usage. "
-            "This does not confirm actual grid stress or an outage."
+            "The model has identified conditions associated "
+            "with elevated electricity usage."
         )
 
     else:
@@ -475,16 +478,10 @@ else:
         )
 
         st.success(
-            "The classifier did not identify this input "
-            "as high usage."
+            "The model has classified the input as normal usage."
         )
 
     st.write("")
-
-    st.caption(
-        "The high-usage threshold was derived from the synthetic "
-        "training dataset. This is not an official ERCOT threshold."
-    )
 
     # ======================================
     # 10. USAGE COMPARISON
@@ -548,24 +545,28 @@ else:
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
+
         st.metric(
             "Average Temperature",
             f"{input_data['temperature_mean']} °C"
         )
 
     with col2:
+
         st.metric(
             "Humidity",
             f"{input_data['humidity']}%"
         )
 
     with col3:
+
         st.metric(
             "Wind Speed",
             f"{input_data['wind_speed_mps']} m/s"
         )
 
     with col4:
+
         st.metric(
             "Precipitation",
             f"{input_data['precipitation_mm']} mm"
@@ -579,7 +580,7 @@ else:
     )
 
     # ======================================
-    # 12. GEMINI EXPLANATION
+    # 12. AI-POWERED GRID ADVISORY
     # ======================================
 
     st.divider()
@@ -602,7 +603,7 @@ else:
         st.markdown(explanation)
 
     # ======================================
-    # 13. RETRIEVED PDF SOURCES
+    # 13. KNOWLEDGE RETRIEVAL SOURCES
     # ======================================
 
     st.divider()
@@ -615,8 +616,7 @@ else:
     )
 
     st.caption(
-        "These are the document sections retrieved by the "
-        "RAG system to provide context for the AI explanation."
+        "Reference documents retrieved to support the AI-generated advisory."
     )
 
     for index, source in enumerate(
@@ -639,7 +639,7 @@ else:
             )
 
             st.write(
-                "**Cosine Similarity Score:**",
+                "**Similarity Score:**",
                 f"{source['similarity_score']:.4f}"
             )
 
@@ -651,12 +651,10 @@ else:
 st.divider()
 
 st.caption(
-    "⚡ SmartGrid AI | Texas Electricity Usage "
-    "Prediction & Consumer Advisory Prototype"
+    "⚡ SmartGrid AI | Intelligent Energy Forecasting "
+    "& Consumer Advisory"
 )
 
 st.caption(
-    "Disclaimer: This project uses synthetic data. "
-    "Predictions are illustrative and are not official "
-    "ERCOT forecasts, grid-stress determinations or outage alerts."
+    "© 2026 SmartGrid AI. All rights reserved."
 )
