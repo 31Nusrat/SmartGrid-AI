@@ -1,3 +1,5 @@
+
+
 import streamlit as st
 import pandas as pd
 from datetime import date
@@ -24,101 +26,239 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-.stApp {
-    background-color: #0b1220;
-    color: #e5e7eb;
+:root {
+    --bg: #F0F6FF;
+    --sidebar: #DCEBFF;
+    --panel: #FFFFFF;
+    --panel-soft: #E8F2FF;
+    --accent: #478BE0;
+    --accent-hover: #286FCB;
+    --text: #18365D;
+    --muted: #52749F;
+    --border: #BBD4F5;
+    --input: #F5F9FF;
 }
 
+/* Main background */
+.stApp {
+    background: linear-gradient(135deg, #F0F6FF, #E5F0FF, #F5F9FF);
+    color: var(--text);
+}
+
+.block-container {
+    padding-top: 1.6rem;
+    padding-bottom: 5rem;
+    max-width: 1500px;
+}
+
+/* Header */
+[data-testid="stHeader"] {
+    background: #F0F6FF;
+}
+
+/* Sidebar */
 [data-testid="stSidebar"] {
-    background-color: #111c30;
+    background: linear-gradient(180deg, #DCEBFF, #CFE2FF);
+    border-right: 1px solid #BBD4F5;
+}
+
+[data-testid="stSidebar"] > div:first-child {
+    background: transparent;
 }
 
 [data-testid="stSidebar"] * {
-    color: #e5e7eb;
+    color: #18365D;
 }
 
+[data-testid="stSidebar"] label,
+[data-testid="stSidebar"] p,
+[data-testid="stSidebar"] [data-testid="stWidgetLabel"] {
+    color: #315982 !important;
+    font-weight: 600;
+}
+
+/* Main headings */
 .main-title {
-    font-size: 38px;
+    color: #18365D;
+    font-size: 39px;
     font-weight: 800;
-    color: #f8fafc;
 }
 
 .subtitle {
-    color: #94a3b8;
+    color: #52749F;
     font-size: 15px;
 }
 
 .section-title {
-    color: #f8fafc;
+    color: #244B78;
     font-size: 22px;
-    font-weight: 700;
+    font-weight: 750;
 }
 
+/* Cards */
 .metric-box {
-    background: linear-gradient(135deg, #172840, #142033);
-    border: 1px solid #263a55;
+    background: linear-gradient(145deg, #FFFFFF, #F0F6FF);
+    border: 1px solid #C8DDF8;
     padding: 22px;
-    border-radius: 14px;
-    min-height: 130px;
+    border-radius: 16px;
+    box-shadow: 0 6px 22px rgba(50, 105, 175, 0.09);
+}
+
+.metric-box:hover {
+    background: #FFFFFF;
+    border-color: #478BE0;
+    transform: translateY(-2px);
 }
 
 .metric-label {
-    color: #94a3b8;
-    font-size: 13px;
+    color: #52749F;
+    font-size: 12px;
+    font-weight: 700;
 }
 
 .metric-value {
-    color: #f8fafc;
+    color: #18365D;
     font-size: 27px;
     font-weight: 750;
-    margin-top: 8px;
 }
 
 .metric-note {
-    color: #94a3b8;
+    color: #52749F;
     font-size: 12px;
-    margin-top: 5px;
 }
 
-.status-high {
-    background-color: #451c29;
-    color: #fca5a5;
-    border: 1px solid #9f3349;
-    padding: 15px;
-    border-radius: 10px;
-    font-weight: 700;
+/* All sidebar inputs */
+[data-testid="stSidebar"] input,
+[data-testid="stSidebar"] textarea,
+[data-testid="stSidebar"] [data-baseweb="input"],
+[data-testid="stSidebar"] [data-baseweb="base-input"],
+[data-testid="stSidebar"] [data-baseweb="select"] > div {
+    background: #F5F9FF !important;
+    color: #18365D !important;
+    border: 1px solid #BBD4F5 !important;
+    border-radius: 10px !important;
+    -webkit-text-fill-color: #18365D !important;
 }
 
-.status-normal {
-    background-color: #12352c;
-    color: #86efac;
-    border: 1px solid #267653;
-    padding: 15px;
-    border-radius: 10px;
-    font-weight: 700;
+/* ERCOT dropdown */
+[data-testid="stSidebar"] [data-testid="stSelectbox"] [data-baseweb="select"] * {
+    background-color: #F5F9FF !important;
+    color: #18365D !important;
 }
 
-.stButton > button {
-    background-color: #087fce;
-    color: white;
-    border-radius: 9px;
-    border: none;
-    height: 48px;
-    font-weight: 700;
+[data-testid="stSidebar"] [data-testid="stSelectbox"] svg {
+    fill: #478BE0 !important;
 }
 
-.stButton > button:hover {
-    background-color: #0b9bf0;
-    color: white;
+/* Prediction date */
+[data-testid="stSidebar"] [data-testid="stDateInput"] * {
+    background-color: #F5F9FF !important;
+    color: #18365D !important;
 }
 
-div[data-testid="stExpander"] {
-    border: 1px solid #263a55;
-    border-radius: 10px;
+[data-testid="stSidebar"] [data-testid="stDateInput"] input {
+    border: 1px solid #BBD4F5 !important;
+    border-radius: 10px !important;
+    -webkit-text-fill-color: #18365D !important;
 }
 
+[data-testid="stSidebar"] [data-testid="stDateInput"] svg {
+    fill: #478BE0 !important;
+}
+
+/* Number input controls */
+[data-testid="stSidebar"] [data-testid="stNumberInput"] button {
+    background: #DCEBFF !important;
+    color: #286FCB !important;
+    border: 1px solid #BBD4F5 !important;
+}
+
+/* Dropdown menu */
+[data-baseweb="popover"],
+[data-baseweb="menu"],
+[data-baseweb="menu"] ul,
+[role="listbox"] {
+    background: #FFFFFF !important;
+    color: #18365D !important;
+}
+
+[role="option"] {
+    background: #FFFFFF !important;
+    color: #18365D !important;
+}
+
+[role="option"]:hover {
+    background: #DCEBFF !important;
+}
+
+/* Buttons */
+.stButton > button,
+.stFormSubmitButton > button {
+    background: linear-gradient(110deg, #478BE0, #78ADEC);
+    color: #FFFFFF !important;
+    border: 1px solid #478BE0;
+    border-radius: 11px;
+    font-weight: 750;
+    min-height: 46px;
+    box-shadow: 0 5px 16px rgba(71, 139, 224, 0.2);
+}
+
+.stButton > button:hover,
+.stFormSubmitButton > button:hover {
+    background: #286FCB;
+    color: #FFFFFF !important;
+    border-color: #286FCB;
+}
+
+/* Sliders */
+[data-testid="stSlider"] [role="slider"] {
+    background: #478BE0 !important;
+    border-color: #478BE0 !important;
+}
+
+[data-testid="stSlider"] [data-baseweb="slider"] > div {
+    background: #BBD4F5;
+}
+
+/* Expanders and chat */
+[data-testid="stExpander"],
+[data-testid="stMetric"],
+[data-testid="stChatMessage"] {
+    background: #FFFFFF !important;
+    border: 1px solid #C8DDF8 !important;
+    border-radius: 12px;
+}
+
+[data-testid="stMetricLabel"],
+[data-testid="stMetricValue"] {
+    color: #18365D !important;
+}
+
+/* Chatbot */
+div[data-testid="stPopover"] {
+    position: fixed !important;
+    right: 26px !important;
+    bottom: 22px !important;
+    z-index: 999999 !important;
+}
+
+div[data-testid="stPopover"] > button {
+    background: linear-gradient(110deg, #478BE0, #78ADEC) !important;
+    color: #FFFFFF !important;
+    border: 1px solid #478BE0 !important;
+    border-radius: 999px !important;
+    font-weight: 800 !important;
+}
+
+div[data-testid="stPopover"] [data-testid="stPopoverBody"] {
+    background: #FFFFFF !important;
+    border: 1px solid #BBD4F5 !important;
+    border-radius: 16px;
+}
+
+/* Dividers */
 hr {
-    border-color: #263a55;
+    border-color: #BBD4F5 !important;
 }
 
 </style>
@@ -135,6 +275,14 @@ if "prediction_result" not in st.session_state:
 if "last_input" not in st.session_state:
     st.session_state.last_input = None
 
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+if "chat_sources" not in st.session_state:
+    st.session_state.chat_sources = {}
+if "chat_chunks" not in st.session_state:
+    st.session_state.chat_chunks = None
+if "chat_embeddings" not in st.session_state:
+    st.session_state.chat_embeddings = None
 
 # ==========================================
 # 4. HEADER
@@ -155,6 +303,21 @@ st.markdown(
 
 st.write("")
 st.divider()
+
+# Centered primary action, placed near the top of the dashboard.
+st.markdown(
+    '<div style="text-align:center;color:#A9BCD3;font-size:12px;'
+    'font-weight:700;letter-spacing:1px;margin-bottom:8px;">READY TO ANALYZE</div>',
+    unsafe_allow_html=True
+)
+left, center, right = st.columns([1.3, 1.4, 1.3])
+with center:
+    predict_button = st.button(
+        "⚡ Generate Prediction",
+        type="primary",
+        use_container_width=True
+    )
+st.write("")
 
 
 # ==========================================
@@ -240,11 +403,6 @@ snowfall = st.sidebar.number_input(
 
 st.sidebar.divider()
 
-predict_button = st.sidebar.button(
-    "⚡ Generate Prediction",
-    type="primary",
-    use_container_width=True
-)
 
 
 # ==========================================
@@ -255,13 +413,13 @@ if predict_button:
 
     if temperature_min > temperature_mean:
 
-        st.sidebar.error(
+        st.error(
             "Minimum temperature cannot exceed average temperature."
         )
 
     elif temperature_mean > temperature_max:
 
-        st.sidebar.error(
+        st.error(
             "Average temperature cannot exceed maximum temperature."
         )
 
@@ -284,7 +442,7 @@ if predict_button:
         try:
 
             with st.spinner(
-                "Analyzing energy demand and generating AI advisory..."
+                "Running ML models, retrieving PDF knowledge and generating AI advisory..."
             ):
 
                 result = run_smartgrid(input_data)
@@ -292,7 +450,9 @@ if predict_button:
             st.session_state.prediction_result = result
             st.session_state.last_input = input_data
 
-            st.sidebar.success("Prediction completed successfully!")
+            st.success(
+                "Prediction completed successfully!"
+            )
 
         except Exception as e:
 
@@ -312,7 +472,7 @@ if result is None:
 
     st.markdown(
         '<div class="section-title">'
-        '📊 Energy Intelligence Dashboard'
+        '📍Š Energy Intelligence Dashboard'
         '</div>',
         unsafe_allow_html=True
     )
@@ -346,7 +506,7 @@ if result is None:
             <div class="metric-box">
                 <div class="metric-label">RISK ANALYTICS</div>
                 <div class="metric-value">Risk Detection</div>
-                <div class="metric-note">High-usage classification</div>
+                <div class="metric-note">High usage and severity estimation</div>
             </div>
             """,
             unsafe_allow_html=True
@@ -358,7 +518,7 @@ if result is None:
             """
             <div class="metric-box">
                 <div class="metric-label">GENERATIVE AI</div>
-                <div class="metric-value">RAG + Gemini</div>
+                <div class="metric-value">RAG + Groq LLM</div>
                 <div class="metric-note">Intelligent energy advisory</div>
             </div>
             """,
@@ -378,7 +538,7 @@ else:
     # ======================================
 
     st.markdown(
-        '<div class="section-title">📈 Prediction Overview</div>',
+        '<div class="section-title">📍ˆ Prediction Overview</div>',
         unsafe_allow_html=True
     )
 
@@ -438,8 +598,74 @@ else:
     st.write("")
 
     # ======================================
-    # 9. RISK ASSESSMENT
+    # 9. OUTAGE IMPACT AND SEVERITY
     # ======================================
+
+    st.divider()
+
+    st.markdown(
+        '<div class="section-title">'
+        '⚡ Outage Impact & Severity Assessment'
+        '</div>',
+        unsafe_allow_html=True
+    )
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+
+        st.metric(
+            "Expected Customers Affected",
+            f"{result['expected_customers']:,.0f}"
+        )
+
+    with col2:
+
+        st.metric(
+            "Expected Outage Duration",
+            f"{result['expected_duration']:.2f}"
+        )
+
+    with col3:
+
+        st.metric(
+            "Severity Score",
+            f"{result['severity_score']:.2f}%"
+        )
+
+    with col4:
+
+        st.metric(
+            "Severity Level",
+            result['severity_level']
+        )
+
+    # Severity status
+    severity_level = result["severity_level"]
+
+    if severity_level in ["Critical", "High"]:
+
+        st.error(
+            f"⚠️ {severity_level.upper()} SEVERITY ESTIMATED"
+        )
+
+    elif severity_level == "Medium":
+
+        st.warning(
+            "⚠️ MEDIUM SEVERITY ESTIMATED"
+        )
+
+    else:
+
+        st.success(
+            "NORMAL / LOW SEVERITY ESTIMATED"
+        )
+
+    # ======================================
+    # 10. RISK ASSESSMENT
+    # ======================================
+
+    st.divider()
 
     st.markdown(
         '<div class="section-title">🚦 Risk Assessment</div>',
@@ -484,13 +710,13 @@ else:
     st.write("")
 
     # ======================================
-    # 10. USAGE COMPARISON
+    # 11. USAGE COMPARISON
     # ======================================
 
     st.divider()
 
     st.markdown(
-        '<div class="section-title">📊 Usage vs Threshold</div>',
+        '<div class="section-title">📍Š Usage vs Threshold</div>',
         unsafe_allow_html=True
     )
 
@@ -532,7 +758,7 @@ else:
         )
 
     # ======================================
-    # 11. WEATHER SUMMARY
+    # 12. WEATHER SUMMARY
     # ======================================
 
     st.divider()
@@ -580,7 +806,7 @@ else:
     )
 
     # ======================================
-    # 12. AI-POWERED GRID ADVISORY
+    # 13. AI-POWERED GRID ADVISORY
     # ======================================
 
     st.divider()
@@ -603,20 +829,21 @@ else:
         st.markdown(explanation)
 
     # ======================================
-    # 13. KNOWLEDGE RETRIEVAL SOURCES
+    # 14. KNOWLEDGE RETRIEVAL SOURCES
     # ======================================
 
     st.divider()
 
     st.markdown(
         '<div class="section-title">'
-        '📚 Knowledge Retrieval Sources'
+        '📍š Knowledge Retrieval Sources'
         '</div>',
         unsafe_allow_html=True
     )
 
     st.caption(
-        "Reference documents retrieved to support the AI-generated advisory."
+        "Reference documents retrieved to support "
+        "the AI-generated advisory."
     )
 
     for index, source in enumerate(
@@ -625,7 +852,7 @@ else:
     ):
 
         with st.expander(
-            f"📄 Source {index}: {source['document']}"
+            f"📍„ Source {index}: {source['document']}"
         ):
 
             st.write(
@@ -645,7 +872,7 @@ else:
 
 
 # ==========================================
-# 14. FOOTER
+# 15. FOOTER
 # ==========================================
 
 st.divider()
@@ -658,3 +885,255 @@ st.caption(
 st.caption(
     "© 2026 SmartGrid AI. All rights reserved."
 )
+
+# ==========================================
+# 16. FLOATING AI CHATBOT - AGENTIC AI
+# ==========================================
+
+from rag.chatbot import initialize_chatbot
+from agent.smartgrid_agent import run_smartgrid_agent
+
+
+with st.popover(
+    "💬 Chat with AI",
+    help="Open the SmartGrid AI Assistant"
+):
+
+    st.markdown("### 🤖 SmartGrid AI Agent")
+
+    st.caption(
+        "Ask about electricity demand, grid stress, "
+        "outages, weather impacts and consumer safety."
+    )
+
+    # --------------------------------------
+    # INITIALIZE KNOWLEDGE BASE
+    # --------------------------------------
+
+    if (
+        st.session_state.chat_chunks is None
+        or st.session_state.chat_embeddings is None
+    ):
+
+        with st.spinner("Preparing SmartGrid knowledge base..."):
+
+            (
+                st.session_state.chat_chunks,
+                st.session_state.chat_embeddings
+            ) = initialize_chatbot()
+
+
+    # --------------------------------------
+    # CHAT HEADER AND CLEAR BUTTON
+    # --------------------------------------
+
+    header_col, clear_col = st.columns([3, 1])
+
+    with header_col:
+
+        st.caption("Powered by Agentic AI + ML + RAG + Groq")
+
+    with clear_col:
+
+        if st.button(
+            "Clear",
+            key="floating_clear_chat"
+        ):
+
+            st.session_state.chat_history = []
+            st.session_state.chat_sources = {}
+
+            st.rerun()
+
+
+    # --------------------------------------
+    # DISPLAY CHAT HISTORY
+    # --------------------------------------
+
+    chat_area = st.container(height=350)
+
+    with chat_area:
+
+        if not st.session_state.chat_history:
+
+            st.info(
+                "Try asking: What causes electricity "
+                "grid stress in Texas?"
+            )
+
+
+        for message_index, message in enumerate(
+            st.session_state.chat_history
+        ):
+
+            with st.chat_message(message["role"]):
+
+                st.markdown(message["content"])
+
+
+                # DISPLAY SOURCES FOR ASSISTANT
+                if message["role"] == "assistant":
+
+                    refs = st.session_state.chat_sources.get(
+                        message_index,
+                        []
+                    )
+
+                    if refs:
+
+                        with st.expander("📚 Retrieved PDF Sources"):
+
+                            for number, ref in enumerate(
+                                refs,
+                                start=1
+                            ):
+
+                                st.markdown(
+                                    f"**{number}. {ref.get('document', 'Unknown document')}**"
+                                )
+
+                                page = ref.get("page", "N/A")
+                                score = ref.get("similarity_score")
+
+                                if score is not None:
+                                    st.caption(
+                                        f"Page {page} | "
+                                        f"Similarity: {float(score):.4f}"
+                                    )
+                                else:
+                                    st.caption(f"Page {page}")
+
+                    # DISPLAY AGENT TOOL ACTIONS
+                    actions = message.get("actions", [])
+
+                    if actions:
+                        with st.expander("⚙️ Agent Actions"):
+                            for action in actions:
+                                st.write("✓", action)
+
+
+    # --------------------------------------
+    # CHAT INPUT
+    # --------------------------------------
+
+    with st.form(
+        "floating_chat_form",
+        clear_on_submit=True
+    ):
+
+        question = st.text_input(
+            "Your question",
+            placeholder="Ask SmartGrid AI...",
+            label_visibility="collapsed"
+        )
+
+        send_question = st.form_submit_button(
+            "Send message",
+            use_container_width=True
+        )
+
+
+    # --------------------------------------
+    # RUN AGENTIC AI
+    # --------------------------------------
+
+    if send_question and question.strip():
+
+        with st.spinner(
+            "SmartGrid AI Agent is thinking..."
+        ):
+
+            try:
+
+                # Keep previous conversation for the agent
+                previous_history = list(
+                    st.session_state.chat_history
+                )
+
+
+                # Run the agent
+                result = run_smartgrid_agent(
+
+                    question=question.strip(),
+
+                    chunks=st.session_state.chat_chunks,
+
+                    embeddings=st.session_state.chat_embeddings,
+
+                    # Latest dashboard inputs
+                    prediction_input=st.session_state.last_input,
+
+                    # Previous conversation
+                    chat_history=previous_history
+                )
+
+
+                # ----------------------------------
+                # SAVE USER MESSAGE
+                # ----------------------------------
+
+                st.session_state.chat_history.append({
+
+                    "role": "user",
+
+                    "content": question.strip()
+
+                })
+
+
+                # ----------------------------------
+                # SAVE ASSISTANT RESPONSE
+                # ----------------------------------
+
+                answer = result.get(
+                    "answer",
+                    "Sorry, I could not generate a response."
+                )
+
+                st.session_state.chat_history.append({
+
+                    "role": "assistant",
+
+                    "content": answer
+
+                })
+
+
+                # ----------------------------------
+                # SAVE SOURCES
+                # ----------------------------------
+
+                assistant_index = (
+                    len(st.session_state.chat_history) - 1
+                )
+
+                st.session_state.chat_sources[
+                    assistant_index
+                ] = result.get("sources", [])
+
+
+                # ----------------------------------
+                # DISPLAY AGENT ACTIONS
+                # ----------------------------------
+
+                actions = result.get("actions", [])
+
+                if actions:
+
+                    st.session_state.chat_history[-1][
+                        "actions"
+                    ] = actions
+
+
+                # Refresh chatbot
+                st.rerun()
+
+
+            except Exception as exc:
+
+                st.error(
+                    "The SmartGrid AI Agent could not "
+                    "process this question."
+                )
+
+                st.exception(exc)
